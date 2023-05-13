@@ -11,6 +11,8 @@ import (
 
 	"wechatbot/config"
 
+	"golang.org/x/net/proxy"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -138,7 +140,12 @@ func Completions(msg string) (*string, error) {
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", *apiKey))
-	client := &http.Client{}
+	dialer, err := proxy.SOCKS5("tcp", "127.0.0.1:1080", nil, proxy.Direct)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	client := &http.Client{Transport: &http.Transport{Dial: dialer.Dial}}
 	response, err := client.Do(req)
 	if err != nil {
 		return nil, err

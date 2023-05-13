@@ -1,4 +1,3 @@
-
 package wechat
 
 import (
@@ -31,7 +30,7 @@ func NewUserMessageHandler() MessageHandlerInterface {
 	return &UserMessageHandler{}
 }
 
-// ReplyText 
+// ReplyText
 func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 接收私聊消息
 	sender, err := msg.Sender()
@@ -67,8 +66,8 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// requestText = UserService.GetUserSessionContext(sender.ID()) + requestText
 	reply, err := openai.Completions(requestText)
 	if err != nil {
-		log.Printf("gtp request error: %v \n", err)
-		msg.ReplyText("机器人神了，我一会发现了就去修。")
+		log.Printf("request error: %v \n", err)
+		msg.ReplyText("出问题了，我一会儿去修理一下。")
 		return err
 	}
 	result := *reply

@@ -14,6 +14,7 @@ type Type string
 
 const (
 	GroupHandler = "group"
+	UserHandler  = "user"
 )
 
 var handlers map[Type]MessageHandlerInterface
@@ -21,12 +22,21 @@ var handlers map[Type]MessageHandlerInterface
 func init() {
 	handlers = make(map[Type]MessageHandlerInterface)
 	handlers[GroupHandler] = NewGroupMessageHandler()
+	handlers[UserHandler] = NewUserMessageHandler()
 }
 
 func Handler(msg *openwechat.Message) {
-	err := handlers[GroupHandler].handle(msg)
-	if err != nil {
-		log.Errorf("handle error: %s\n", err.Error())
-		return
+	if msg.IsSendByGroup() {
+		err := handlers[GroupHandler].handle(msg)
+		if err != nil {
+				log.Errorf("GroupHandler handle error: %s\n", err.Error())
+				return
+		}
+	}else if msg.IsSendByFriend() {
+		err := handlers[UserHandler].handle(msg)
+		if err != nil {
+				log.Errorf("FriendHandler handle error: %s\n", err.Error())
+				return
+		}
 	}
 }

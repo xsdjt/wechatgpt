@@ -92,7 +92,7 @@ var contextMgr ContextMgr
 
 // Completions sendMsg
 func Completions(msg string) (*string, error) {
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 	apiKey := config.GetOpenAiApiKey()
 	if apiKey == nil {
 		return nil, errors.New("未配置apiKey")
@@ -194,7 +194,7 @@ func Completions(msg string) (*string, error) {
 		reply += "Error: "
 		reply += gptErrorBody.Error["message"].(string)
 	}
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	client.Transport.(*http.Transport).CloseIdleConnections()
 	return &reply, nil
 }

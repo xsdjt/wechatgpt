@@ -192,6 +192,6 @@ func Completions(msg string) (*string, error) {
 		reply += "Error: "
 		reply += gptErrorBody.Error["message"].(string)
 	}
-
+	client.Transport.(*http.Transport).CloseIdleConnections()
 	return &reply, nil
 }

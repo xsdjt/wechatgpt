@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"wechatbot/config"
 
@@ -192,6 +193,7 @@ func Completions(msg string) (*string, error) {
 		reply += "Error: "
 		reply += gptErrorBody.Error["message"].(string)
 	}
+	time.Sleep(3 * time.Second)
 	client.Transport.(*http.Transport).CloseIdleConnections()
 	return &reply, nil
 }
